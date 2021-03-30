@@ -13,8 +13,10 @@ import com.antonioleiva.flowworkshop.databinding.ActivityMainBinding
 import com.antonioleiva.flowworkshop.ui.common.app
 import com.antonioleiva.flowworkshop.ui.common.getViewModel
 import com.antonioleiva.flowworkshop.ui.common.visible
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 
+@ExperimentalCoroutinesApi
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
@@ -27,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
             viewModel = getViewModel(::buildViewModel)
 
-            val moviesAdapter = MoviesAdapter()
+            val moviesAdapter = MoviesAdapter(lifecycleScope)
 
             lifecycleScope.launchWhenStarted {
                 viewModel.spinner.collect { progress.visible = it }
