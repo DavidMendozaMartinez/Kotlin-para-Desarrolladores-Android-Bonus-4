@@ -12,6 +12,7 @@ import com.antonioleiva.flowworkshop.data.server.TheMovieDbDataSource
 import com.antonioleiva.flowworkshop.databinding.ActivityMainBinding
 import com.antonioleiva.flowworkshop.ui.common.app
 import com.antonioleiva.flowworkshop.ui.common.getViewModel
+import com.antonioleiva.flowworkshop.ui.common.lastVisibleEvents
 import com.antonioleiva.flowworkshop.ui.common.visible
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -39,14 +40,13 @@ class MainActivity : AppCompatActivity() {
                 viewModel.movies.collect { moviesAdapter.submitList(it) }
             }
 
-            recycler.adapter = moviesAdapter
-
-            val layoutManager = recycler.layoutManager as GridLayoutManager
-            recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    viewModel.lastVisible.value = layoutManager.findLastVisibleItemPosition()
+            lifecycleScope.launchWhenStarted {
+                recycler.lastVisibleEvents.collect {
+                    viewModel.lastVisible.value = it
                 }
-            })
+            }
+
+            recycler.adapter = moviesAdapter
         }
 
     }

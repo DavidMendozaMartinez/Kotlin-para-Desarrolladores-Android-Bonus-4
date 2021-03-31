@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.antonioleiva.flowworkshop.MoviesApp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -38,4 +40,20 @@ val View.onClickEvents: Flow<View>
         val onClickListener = View.OnClickListener { offer(it) }
         setOnClickListener(onClickListener)
         awaitClose { setOnClickListener(null) }
+    }.conflate()
+
+@ExperimentalCoroutinesApi
+val RecyclerView.lastVisibleEvents: Flow<Int>
+    get() = callbackFlow<Int> {
+        val layoutManager = layoutManager as GridLayoutManager
+
+        val listener = object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                offer(layoutManager.findLastVisibleItemPosition())
+            }
+        }
+
+        addOnScrollListener(listener)
+
+        awaitClose { removeOnScrollListener(listener) }
     }.conflate()
