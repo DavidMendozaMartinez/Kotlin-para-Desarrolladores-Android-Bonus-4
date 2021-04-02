@@ -9,3 +9,7 @@ Curso Kotlin para Desarrolladores Android - Bonus 4: Programación Reactiva con 
 El proyecto contiene los pasos detallados por el bonus 4 del curso Kotlin para Desarrolladores Android de [Antonio Leiva](https://github.com/antoniolg).
 
 Puedes encontrar más información [aquí](https://devexperto.com/curso-kotlin-online).
+
+Basado en el siguiente ejemplo:
+
+- [[GitHub] antoniolg/flow-workshop](https://github.com/antoniolg/flow-workshop)
