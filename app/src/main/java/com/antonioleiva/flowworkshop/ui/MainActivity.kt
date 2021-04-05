@@ -3,8 +3,6 @@ package com.antonioleiva.flowworkshop.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.antonioleiva.flowworkshop.R
 import com.antonioleiva.flowworkshop.data.db.RoomDataSource
 import com.antonioleiva.flowworkshop.data.domain.MoviesRepository
@@ -41,9 +39,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             lifecycleScope.launchWhenStarted {
-                recycler.lastVisibleEvents.collect {
-                    viewModel.lastVisible.value = it
-                }
+                recycler.lastVisibleEvents.collect { viewModel.notifyLastVisible(it) }
             }
 
             recycler.adapter = moviesAdapter
